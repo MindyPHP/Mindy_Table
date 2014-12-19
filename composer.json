@@ -1,0 +1,34 @@
+{
+    "name": "mindy/table",
+    "homepage": "https://github.com/studio107/Mindy_Table",
+    "version": "1.0.0",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": {
+            "": "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.4",
+        "mindy/helper": "dev-master"
+    },
+    "require-dev": {
+        "satooshi/php-coveralls": "dev-master"
+    },
+    "authors": [{
+        "name": "Maxim Falaleev",
+        "email": "max@studio107.ru",
+        "homepage": "http://studio107.ru",
+        "role": "Developer"
+    },
+    {
+        "name": "Anton Okulov",
+        "email": "qantus@mail.ru",
+        "homepage": "http://studio107.ru",
+        "role": "Developer"
+    }],
+    "support": {
+        "issues": "https://github.com/studio107/Mindy_Table/issues?state=open"
+    }
+}
