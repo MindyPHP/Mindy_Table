@@ -62,6 +62,11 @@ abstract class Column
      */
     public $postfix = '';
 
+    /**
+     * @var null|string
+     */
+    public $emptyValue = null;
+
     public function getTitle()
     {
         return $this->title ? $this->title : $this->name;
@@ -102,7 +107,8 @@ abstract class Column
         } elseif (is_object($record)) {
             $value = $record->{$this->name};
         }
-        return $value;
+
+        return ($this->emptyValue && !$value) ? $this->emptyValue : $value;
     }
 
     public function renderCell($record)
