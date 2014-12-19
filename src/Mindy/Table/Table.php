@@ -25,6 +25,11 @@ class Table
     use Configurator, Accessors;
 
     /**
+     * @TODO
+     * @var bool
+     */
+    public $pagination = true;
+    /**
      * @var \Mindy\Orm|QuerySet|array
      */
     public $data = [];
