@@ -108,7 +108,7 @@ class Table
             foreach ($this->getInitColumns() as $column) {
                 $header .= $column->renderHeadCell();
             }
-            return strtr('<thead>{header}</thead>', [
+            return strtr('<thead><tr>{header}</tr></thead>', [
                 '{header}' => $header
             ]);
         }
@@ -122,7 +122,7 @@ class Table
             foreach ($this->getInitColumns() as $column) {
                 $footer .= $column->renderFootCell();
             }
-            return strtr('<tfoot>{footer}</tfoot>', [
+            return strtr('<tfoot><tr>{footer}</tr></tfoot>', [
                 '{footer}' => $footer
             ]);
         }
@@ -134,9 +134,14 @@ class Table
         $body = '';
         $data = $this->getData();
         foreach ($data as $item) {
+            $row = '';
             foreach ($this->getInitColumns() as $column) {
-                $body .= $column->renderCell($item);
+                $row .= $column->renderCell($item);
             }
+            $body .= strtr('<tr {html}>{row}</tr>', [
+                '{html}' => $this->getRowHtmlAttributes($item),
+                '{row}' => $row
+            ]);
         }
         return strtr('<tbody>{body}</tbody>', [
             '{body}' => $body
@@ -169,6 +174,15 @@ class Table
     public function __toString()
     {
         return (string)$this->render();
+    }
+
+    /**
+     * @param $record
+     * @return string
+     */
+    public function getRowHtmlAttributes($record)
+    {
+        return '';
     }
 
     public function getData()

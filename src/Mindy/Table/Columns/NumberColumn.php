@@ -15,21 +15,15 @@
 namespace Mindy\Table\Columns;
 
 
-use Mindy\Utils\RenderTrait;
-
-class TemplateColumn extends Column
+class NumberColumn extends Column
 {
-    use RenderTrait;
-
-    public $template;
+    public $decimals = 0;
+    public $decPoint = '.';
+    public $thousandsSep = ',';
 
     public function getValue($record)
     {
         $value = parent::getValue($record);
-        return self::renderTemplate($this->template, [
-            'value' => $value,
-            'record' => $record,
-            'table' => $this->table
-        ]);
+        return ($this->emptyValue && !$value) ? '' : number_format($value, $this->decimals, $this->decPoint, $this->thousandsSep);
     }
-}
+} 

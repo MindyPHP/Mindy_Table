@@ -67,6 +67,11 @@ abstract class Column
      */
     public $emptyValue = null;
 
+    /**
+     * @return bool
+     */
+    public $virtual = false;
+
     public function getTitle()
     {
         return $this->title ? $this->title : $this->name;
@@ -102,23 +107,28 @@ abstract class Column
     public function getValue($record)
     {
         $value = '';
-        if (is_array($record) && isset($record[$this->name])) {
-            $value = $record[$this->name];
-        } elseif (is_object($record)) {
-            $value = $record->{$this->name};
+        if (!$this->virtual) {
+            if (is_array($record) && isset($record[$this->name])) {
+                $value = $record[$this->name];
+            } elseif (is_object($record)) {
+                $value = $record->{$this->name};
+            }
         }
-
-        return ($this->emptyValue && !$value) ? $this->emptyValue : $value;
+        return $value;
     }
 
     public function renderCell($record)
     {
+        $value = $this->getValue($record);
+        $empty = false;
+        if (!$value) {
+            $empty = $this->emptyValue;
+        }
         return strtr($this->cellTemplate, [
-            '{value}' => $this->getValue($record),
-            '{record}' => $record,
+            '{value}' => $empty ? $empty : $value,
             '{name}' => $this->name,
-            '{prefix}' => $this->prefix,
-            '{postfix}' => $this->postfix,
+            '{prefix}' => $empty ? '' : $this->prefix,
+            '{postfix}' => $empty ? '' : $this->postfix,
             '{html}' => $this->getHtmlAttributes()
         ]);
     }
