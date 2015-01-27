@@ -92,7 +92,7 @@ abstract class Column
 
     public function renderHeadCell()
     {
-        return strtr($this->headCellTemplate,[
+        return strtr($this->headCellTemplate, [
             '{title}' => $this->getTitle(),
             '{html}' => $this->getHtmlAttributes()
         ]);

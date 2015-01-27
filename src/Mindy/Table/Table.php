@@ -19,43 +19,53 @@ use Mindy\Helper\Creator;
 use Mindy\Helper\Traits\Accessors;
 use Mindy\Helper\Traits\Configurator;
 use Mindy\Orm\QuerySet;
+use Mindy\Pagination\Pagination;
+use Mindy\Table\Columns\RawColumn;
 
-class Table
+abstract class Table
 {
     use Configurator, Accessors;
 
     /**
-     * @TODO
      * @var bool
      */
-    public $pagination = true;
+    public $enablePagination = true;
     /**
-     * @var \Mindy\Orm|QuerySet|array
+     * @var \Mindy\Orm\Model|\Mindy\Orm\QuerySet|array
      */
     public $data = [];
-
     /**
      * @var array
      */
     public $html = [];
-
     /**
      * @var string
      */
-    public $template = '<table {html}>{caption}{header}{footer}{body}</table>';
-
+    public $template = '<table {html}>{caption}{header}{footer}{body}</table>{pager}';
+    /**
+     * @var array pagination config
+     */
+    public $paginationConfig = [];
     /**
      * @var \Mindy\Table\Columns\Column[]
      */
     protected $_columns = null;
-
     /**
      * @var string Table caption
      */
     public $caption = '';
-
+    /**
+     * @var bool
+     */
     public $enableHeader = true;
+    /**
+     * @var bool
+     */
     public $enableFooter = false;
+    /**
+     * @var \Mindy\Pagination\Pagination
+     */
+    private $_pager;
 
     public function getColumns()
     {
@@ -79,8 +89,11 @@ class Table
         if (is_null($this->_columns)) {
             $this->_columns = [];
 
-            foreach($this->getColumns() as $name=>$config) {
-                if (!is_array($config)) {
+            foreach ($this->getColumns() as $name => $config) {
+                if (is_numeric($name)) {
+                    $name = $config;
+                    $config = ['class' => RawColumn::className()];
+                } else if (!is_array($config)) {
                     $config = ['class' => $config];
                 }
 
@@ -102,7 +115,8 @@ class Table
             '{caption}' => $this->renderCaption(),
             '{header}' => $this->renderHeader(),
             '{footer}' => $this->renderFooter(),
-            '{body}' => $this->renderBody()
+            '{body}' => $this->renderBody(),
+            '{pager}' => $this->getPager()
         ]);
     }
 
@@ -156,7 +170,7 @@ class Table
     public function renderCaption()
     {
         if ($this->caption) {
-            return strtr('<caption>{caption}</caption>',[
+            return strtr('<caption>{caption}</caption>', [
                 '{caption}' => $this->caption
             ]);
         }
@@ -190,13 +204,21 @@ class Table
         return '';
     }
 
+    public function getPager()
+    {
+        if ($this->_pager === null) {
+            $this->_pager = new Pagination($this->data, $this->paginationConfig);
+        }
+
+        return $this->_pager;
+    }
+
     public function getData()
     {
-        // @TODO: pager
-        if (is_a($this->data, QuerySet::className())) {
-            return $this->data->all();
+        if ($this->enablePagination) {
+            return $this->getPager()->paginate();
         } else {
-            return $this->data;
+            return is_a($this->data, QuerySet::className()) ? $this->data->all() : $this->data;
         }
     }
 }

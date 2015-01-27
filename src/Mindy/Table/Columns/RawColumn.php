@@ -14,7 +14,7 @@
 
 namespace Mindy\Table\Columns;
 
-
 class RawColumn extends Column
 {
-} 
+
+}
