@@ -1,9 +1,8 @@
 {
     "name": "mindy/table",
     "homepage": "https://github.com/studio107/Mindy_Table",
-    "version": "1.0.0",
+    "version": "0.1",
     "license": "MIT",
-    "minimum-stability": "dev",
     "autoload": {
         "psr-0": {
             "": "src/"
@@ -21,8 +20,7 @@
         "email": "max@studio107.ru",
         "homepage": "http://studio107.ru",
         "role": "Developer"
-    },
-    {
+    }, {
         "name": "Anton Okulov",
         "email": "qantus@mail.ru",
         "homepage": "http://studio107.ru",
