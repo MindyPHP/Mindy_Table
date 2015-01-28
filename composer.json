@@ -13,7 +13,6 @@
         "mindy/helper": "dev-master"
     },
     "require-dev": {
-        "satooshi/php-coveralls": "dev-master"
     },
     "authors": [{
         "name": "Maxim Falaleev",
