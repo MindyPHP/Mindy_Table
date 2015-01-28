@@ -17,8 +17,17 @@ namespace Mindy\Table\Columns;
 
 class NumberColumn extends Column
 {
+    /**
+     * @var int
+     */
     public $decimals = 0;
+    /**
+     * @var string delimiter
+     */
     public $decPoint = '.';
+    /**
+     * @var string
+     */
     public $thousandsSep = ',';
 
     public function getValue($record)
