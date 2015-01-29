@@ -15,6 +15,7 @@
 namespace Mindy\Table;
 
 
+use Exception;
 use Mindy\Helper\Creator;
 use Mindy\Helper\Traits\Accessors;
 use Mindy\Helper\Traits\Configurator;
@@ -91,8 +92,10 @@ abstract class Table
 
             foreach ($this->getColumns() as $name => $config) {
                 if (is_numeric($name)) {
-                    $name = $config;
-                    $config = ['class' => RawColumn::className()];
+                    if (is_string($config)) {
+                        $name = $config;
+                        $config = ['class' => RawColumn::className()];
+                    }
                 } else if (!is_array($config)) {
                     $config = ['class' => $config];
                 }
@@ -179,14 +182,14 @@ abstract class Table
 
     public function getHtmlAttributes()
     {
-        if (is_array($this->html)) {
+        if (is_string($this->html)) {
+            return $this->html;
+        } else if (is_array($this->html)) {
             $html = '';
             foreach ($this->html as $name => $value) {
                 $html .= is_numeric($name) ? " $value" : " $name='$value'";
             }
             return $html;
-        } else {
-            return $this->html;
         }
     }
 

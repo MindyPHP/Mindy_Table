@@ -25,9 +25,8 @@ class TemplateColumn extends Column
 
     public function getValue($record)
     {
-        $value = parent::getValue($record);
         return self::renderTemplate($this->template, [
-            'value' => $value,
+            'value' => parent::getValue($record),
             'record' => $record,
             'table' => $this->table
         ]);

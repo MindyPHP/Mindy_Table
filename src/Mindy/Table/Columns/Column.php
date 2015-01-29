@@ -15,6 +15,7 @@
 namespace Mindy\Table\Columns;
 
 
+use Exception;
 use Mindy\Helper\Traits\Accessors;
 use Mindy\Helper\Traits\Configurator;
 
@@ -107,11 +108,15 @@ abstract class Column
     public function getValue($record)
     {
         $value = '';
-        if (!$this->virtual) {
+        if ($this->virtual === false) {
             if (is_array($record) && isset($record[$this->name])) {
                 $value = $record[$this->name];
             } elseif (is_object($record)) {
                 $value = $record->{$this->name};
+            } elseif (is_string($record)) {
+                $value = $record;
+            } else {
+                throw new Exception("Unknown data type");
             }
         }
         return $value;
