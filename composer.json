@@ -4,15 +4,13 @@
     "version": "0.2",
     "license": "MIT",
     "autoload": {
-        "psr-0": {
-            "": "src/"
+        "psr-4": {
+            "Mindy\\Table\\": "src/Mindy/Table"
         }
     },
     "require": {
         "php": ">=5.4",
-        "mindy/helper": "dev-master"
-    },
-    "require-dev": {
+        "mindy/helper": "0.1"
     },
     "authors": [{
         "name": "Maxim Falaleev",
