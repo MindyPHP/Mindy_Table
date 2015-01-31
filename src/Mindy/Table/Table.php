@@ -14,8 +14,6 @@
 
 namespace Mindy\Table;
 
-
-use Exception;
 use Mindy\Helper\Creator;
 use Mindy\Helper\Traits\Accessors;
 use Mindy\Helper\Traits\Configurator;
@@ -78,11 +76,6 @@ abstract class Table
         $this->data = $data;
         $this->configure($config);
         $this->init();
-    }
-
-    public function init()
-    {
-
     }
 
     public function getInitColumns()
@@ -161,7 +154,7 @@ abstract class Table
                 $row .= $column->renderCell($item);
             }
             $body .= strtr('<tr {html}>{row}</tr>', [
-                '{html}' => $this->getRowHtmlAttributes($item),
+                '{html}' => $this->formatHtmlAttributes($this->getRowHtmlAttributes($item)),
                 '{row}' => $row
             ]);
         }
@@ -180,17 +173,28 @@ abstract class Table
         return '';
     }
 
+    /**
+     * @param array $html
+     * @return string
+     */
+    public function formatHtmlAttributes(array $html)
+    {
+        if (is_string($html)) {
+            return $html;
+        } else if (is_array($html)) {
+            $out = '';
+            foreach ($html as $name => $value) {
+                $out .= is_numeric($name) ? " $value" : " $name='$value'";
+            }
+            return $out;
+        }
+
+        return '';
+    }
+
     public function getHtmlAttributes()
     {
-        if (is_string($this->html)) {
-            return $this->html;
-        } else if (is_array($this->html)) {
-            $html = '';
-            foreach ($this->html as $name => $value) {
-                $html .= is_numeric($name) ? " $value" : " $name='$value'";
-            }
-            return $html;
-        }
+        return $this->formatHtmlAttributes($this->html);
     }
 
     public function __toString()
@@ -200,11 +204,11 @@ abstract class Table
 
     /**
      * @param $record
-     * @return string
+     * @return array
      */
     public function getRowHtmlAttributes($record)
     {
-        return '';
+        return [];
     }
 
     public function getPager()
@@ -223,5 +227,10 @@ abstract class Table
         } else {
             return is_a($this->data, QuerySet::className()) ? $this->data->all() : $this->data;
         }
+    }
+
+    public function count()
+    {
+        return is_a($this->data, QuerySet::className()) ? $this->data->count() : count($this->data);
     }
 }

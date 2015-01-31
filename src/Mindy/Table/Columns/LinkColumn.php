@@ -34,9 +34,10 @@ class LinkColumn extends Column
     public function getValue($record)
     {
         $value = parent::getValue($record);
-        return strtr($this->template, [
+        $url = $this->route->__invoke($record);
+        return $url ? strtr($this->template, [
             '{value}' => $value,
-            '{url}' => $this->route->__invoke($record)
-        ]);
+            '{url}' => $url
+        ]) : $value;
     }
 }

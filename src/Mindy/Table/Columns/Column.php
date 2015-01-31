@@ -27,47 +27,38 @@ abstract class Column
      * @var string Column title
      */
     public $title;
-
     /**
      * @var string Column name
      */
     public $name;
-
     /**
      * @var \Mindy\Table\Table
      */
     public $table;
-
     /**
      * @var string
      */
     public $cellTemplate = '<td {html}>{prefix}{value}{postfix}</td>';
-
     /**
      * @var string
      */
     public $headCellTemplate = '<th {html}>{title}</th>';
-
     /**
      * @var array|string
      */
     public $html = [];
-
     /**
      * @var string
      */
     public $prefix = '';
-
     /**
      * @return string
      */
     public $postfix = '';
-
     /**
      * @var null|string
      */
     public $emptyValue = null;
-
     /**
      * @return bool
      */
@@ -75,20 +66,31 @@ abstract class Column
 
     public function getTitle()
     {
-        return $this->title ? $this->title : $this->name;
+        return $this->title !== null ? $this->title : $this->name;
+    }
+
+    /**
+     * @param array $html
+     * @return string
+     */
+    public function formatHtmlAttributes(array $html)
+    {
+        if (is_string($html)) {
+            return $html;
+        } else if (is_array($html)) {
+            $out = '';
+            foreach ($html as $name => $value) {
+                $out .= is_numeric($name) ? " $value" : " $name='$value'";
+            }
+            return $out;
+        }
+
+        return '';
     }
 
     public function getHtmlAttributes()
     {
-        if (is_array($this->html)) {
-            $html = '';
-            foreach ($this->html as $name => $value) {
-                $html .= is_numeric($name) ? " $value" : " $name='$value'";
-            }
-            return $html;
-        } else {
-            return $this->html;
-        }
+        return $this->formatHtmlAttributes($this->html);
     }
 
     public function renderHeadCell()
