@@ -1,24 +1,15 @@
 <?php
-/**
- *
- *
- * All rights reserved.
- *
- * @author Okulov Anton
- * @email qantus@mail.ru
- * @version 1.0
- * @company Studio107
- * @site http://studio107.ru
- * @date 19/12/14 12:42
- */
 
 namespace Mindy\Table\Columns;
-
 
 use Exception;
 use Mindy\Helper\Traits\Accessors;
 use Mindy\Helper\Traits\Configurator;
 
+/**
+ * Class Column
+ * @package Mindy\Table
+ */
 abstract class Column
 {
     use Configurator, Accessors;

@@ -1,16 +1,4 @@
 <?php
-/**
- *
- *
- * All rights reserved.
- *
- * @author Okulov Anton
- * @email qantus@mail.ru
- * @version 1.0
- * @company Studio107
- * @site http://studio107.ru
- * @date 19/12/14 12:38
- */
 
 namespace Mindy\Table;
 
@@ -21,6 +9,10 @@ use Mindy\Orm\QuerySet;
 use Mindy\Pagination\Pagination;
 use Mindy\Table\Columns\RawColumn;
 
+/**
+ * Class Table
+ * @package Mindy\Table
+ */
 abstract class Table
 {
     use Configurator, Accessors;
