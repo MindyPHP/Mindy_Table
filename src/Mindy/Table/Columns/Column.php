@@ -5,6 +5,7 @@ namespace Mindy\Table\Columns;
 use Exception;
 use Mindy\Helper\Traits\Accessors;
 use Mindy\Helper\Traits\Configurator;
+use Mindy\Orm\Model;
 
 /**
  * Class Column
@@ -105,7 +106,16 @@ abstract class Column
             if (is_array($record) && isset($record[$this->name])) {
                 $value = $record[$this->name];
             } elseif (is_object($record)) {
-                $value = $record->{$this->name};
+                if ($record instanceof Model) {
+                    $field = $record->getField($this->name);
+                    if (!empty($field->choices)) {
+                        $value = $field->choices[$record->{$this->name}];
+                    } else {
+                        $value = $record->{$this->name};
+                    }
+                } else {
+                    $value = $record->{$this->name};
+                }
             } elseif (is_string($record)) {
                 $value = $record;
             } else {
