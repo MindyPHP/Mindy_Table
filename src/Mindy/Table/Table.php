@@ -208,7 +208,7 @@ abstract class Table
         if ($this->enablePagination === false) {
             return null;
         }
-        
+
         if ($this->_pager === null) {
             $this->_pager = new Pagination($this->data, $this->paginationConfig);
         }
