@@ -14,11 +14,13 @@ class LinkColumn extends Column
     /**
      * @var string
      */
-    public $template = "<a href='{url}' title='{value}'>{value}</a>";
+    public $template = "<a href='{url}' title='{value}'>{text}</a>";
     /**
      * @var Closure
      */
     public $route;
+
+    public $text;
 
     /**
      * @param $record
@@ -28,12 +30,19 @@ class LinkColumn extends Column
     public function getValue($record)
     {
         $value = parent::getValue($record);
+        $text = $this->text;
+        if (!empty($text) && $text instanceof Closure) {
+            $text = $text($value);
+        } else {
+            $text = $value;
+        }
         if (empty($this->route)) {
             throw new Exception('Missing route');
         }
         $url = $this->route->__invoke($record);
         return $url ? strtr($this->template, [
             '{value}' => $value,
+            '{text}' => $text,
             '{url}' => $url
         ]) : $value;
     }
