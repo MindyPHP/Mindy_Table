@@ -3,6 +3,7 @@
 namespace Mindy\Table\Columns;
 
 use Closure;
+use Mindy\Exception\Exception;
 
 /**
  * Class LinkColumn
@@ -27,6 +28,9 @@ class LinkColumn extends Column
     public function getValue($record)
     {
         $value = parent::getValue($record);
+        if (empty($this->route)) {
+            throw new Exception('Missing route');
+        }
         $url = $this->route->__invoke($record);
         return $url ? strtr($this->template, [
             '{value}' => $value,
