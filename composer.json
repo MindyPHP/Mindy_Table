@@ -1,16 +1,14 @@
 {
     "name": "mindy/table",
-    "homepage": "https://github.com/studio107/Mindy_Table",
-    "version": "0.2.3",
-    "license": "MIT",
+    "homepage": "https://github.com/MindyPHP/Mindy_Table",
+    "license": "BSD",
     "autoload": {
         "psr-4": {
             "Mindy\\Table\\": "src/Mindy/Table"
         }
     },
     "require": {
-        "php": ">=5.4",
-        "mindy/helper": "0.*"
+        "php": ">=5.4"
     },
     "authors": [{
         "name": "Maxim Falaleev",
@@ -24,6 +22,6 @@
         "role": "Developer"
     }],
     "support": {
-        "issues": "https://github.com/studio107/Mindy_Table/issues?state=open"
+        "issues": "https://github.com/MindyPHP/Mindy_Table/issues?state=open"
     }
 }
